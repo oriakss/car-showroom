@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'war'
 }
 
 group = 'ru.clevertec'
@@ -10,9 +11,11 @@ repositories {
 }
 
 dependencies {
+    compileOnly 'javax:javaee-api:8.0.1'
     compileOnly 'org.projectlombok:lombok:1.18.36'
     annotationProcessor 'org.projectlombok:lombok:1.18.36'
 
+    implementation 'javax.servlet:jstl:1.2'
     implementation 'org.projectlombok:lombok:1.18.36'
     implementation 'org.hibernate.orm:hibernate-core:6.6.3.Final'
     implementation 'org.postgresql:postgresql:42.7.4'
