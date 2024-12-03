@@ -58,7 +58,7 @@ public class Car {
     private CarShowroom carShowroom;
 
     @ManyToMany(mappedBy = "cars")
-    private Client client;
+    private List<Client> client;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     private List<Review> reviews;
