@@ -12,7 +12,7 @@
     </tr>
     </thead>
     <tbody>
-    <form action="/car-showroom/create" method="post">
+    <form action="/car-showrooms/car-showroom/create" method="post">
         <tr>
             <td><input type="text" name="name" placeholder="name" required></td>
             <td><input type="text" name="address" placeholder="address" required></td>
@@ -21,6 +21,6 @@
     </form>
     </tbody>
 </table>
-<a href="http://localhost:8080/car-showroom">Go to start page</a>
+<a href="http://localhost:8080/car-showrooms">Go to start page</a>
 </body>
 </html>

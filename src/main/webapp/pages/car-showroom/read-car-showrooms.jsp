@@ -23,6 +23,6 @@
     </c:forEach>
     </tbody>
 </table>
-<a href="http://localhost:8080/car-showroom">Go to start page</a>
+<a href="http://localhost:8080/car-showrooms">Go to start page</a>
 </body>
 </html>

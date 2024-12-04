@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "/create")
+@WebServlet(urlPatterns = "/car-showroom/create")
 public class CreateCarShowroomController extends HttpServlet {
 
     private final CarShowroomService carShowroomService = CarShowroomServiceImpl.getInstance();
@@ -25,6 +25,6 @@ public class CreateCarShowroomController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         carShowroomService.createCarShowroom(carShowroomMapper.buildCarShowroom(request));
-        request.getRequestDispatcher("/index.jsp").forward(request, response);
+        doGet(request, response);
     }
 }

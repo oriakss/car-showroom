@@ -20,12 +20,12 @@
                 <td><input type="text" name="id" value="${carShowroom.id}" readonly size="1"></td>
                 <td><input type="text" name="name" value="${carShowroom.name}" required></td>
                 <td><input type="text" name="address" value="${carShowroom.address}" required></td>
-                <td><input type="submit" formaction="/car-showroom/update" value="Update"></td>
+                <td><input type="submit" formaction="/car-showrooms/car-showroom/update" value="Update"></td>
             </tr>
         </form>
     </c:forEach>
     </tbody>
 </table>
-<a href="http://localhost:8080/car-showroom">Go to start page</a>
+<a href="http://localhost:8080/car-showrooms">Go to start page</a>
 </body>
 </html>

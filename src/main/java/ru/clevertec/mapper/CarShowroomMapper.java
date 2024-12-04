@@ -23,6 +23,5 @@ public class CarShowroomMapper {
     }
 
     private CarShowroomMapper() {
-
     }
 }

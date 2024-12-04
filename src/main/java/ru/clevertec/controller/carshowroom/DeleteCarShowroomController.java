@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "/delete")
+@WebServlet(urlPatterns = "/car-showroom/delete")
 public class DeleteCarShowroomController  extends HttpServlet {
 
     private final CarShowroomService carShowroomService = CarShowroomServiceImpl.getInstance();

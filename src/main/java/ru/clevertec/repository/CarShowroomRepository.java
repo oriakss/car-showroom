@@ -11,7 +11,7 @@ public interface CarShowroomRepository {
 
     Optional<List<CarShowroom>> readCarShowrooms();
 
-    Optional<CarShowroom> updateCarShowroom(CarShowroom carShowroom);
+    Optional<CarShowroom> updateCarShowroom(CarShowroom updatedCarShowroom);
 
     Optional<CarShowroom> deleteCarShowroom(Long carShowroomId);
 }

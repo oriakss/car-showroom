@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "/update")
+@WebServlet(urlPatterns = "/car-showroom/update")
 public class UpdateCarShowroomController  extends HttpServlet {
 
     private final CarShowroomService carShowroomService = CarShowroomServiceImpl.getInstance();
