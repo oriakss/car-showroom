@@ -4,6 +4,7 @@ import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,6 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -45,11 +47,11 @@ public class Client {
             name = "client_contacts",
             joinColumns = @JoinColumn(name = "client_id")
     )
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> contacts;
 
     @Column(name = "registration_date", nullable = false, updatable = false)
-    private String registrationDate;
+    private LocalDateTime registrationDate;
 
     @ManyToMany
     @JoinTable(
