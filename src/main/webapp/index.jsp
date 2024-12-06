@@ -40,5 +40,17 @@
 <form method="get">
     <a href="car/delete">DELETE CAR</a>
 </form>
+<form method="get">
+    <a href="client/create">CREATE CLIENT</a>
+</form>
+<form method="get">
+    <a href="client/read">READ CLIENTS</a>
+</form>
+<form method="get">
+    <a href="client/update">UPDATE CLIENT</a>
+</form>
+<form method="get">
+    <a href="client/delete">DELETE CLIENT</a>
+</form>
 </body>
 </html>
