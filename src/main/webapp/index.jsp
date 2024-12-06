@@ -52,5 +52,17 @@
 <form method="get">
     <a href="client/delete">DELETE CLIENT</a>
 </form>
+<form method="get">
+    <a href="review/create">CREATE REVIEW</a>
+</form>
+<form method="get">
+    <a href="review/read">READ REVIEWS</a>
+</form>
+<form method="get">
+    <a href="review/update">UPDATE REVIEW</a>
+</form>
+<form method="get">
+    <a href="review/delete">DELETE REVIEW</a>
+</form>
 </body>
 </html>
