@@ -32,7 +32,8 @@ public class ClientRepositoryImpl implements ClientRepository {
 
             clientCriteriaQuery
                     .select(clientRoot.get("id"))
-                    .where(criteriaBuilder.equal(clientRoot.get("name"), client.getName()));
+                    .where(criteriaBuilder.equal(clientRoot.get("name"), client.getName()))
+                    .where(criteriaBuilder.equal(clientRoot.get("registrationDate"), client.getRegistrationDate()));
 
             Long clientId = session.createQuery(clientCriteriaQuery)
                     .getResultList()

@@ -26,8 +26,8 @@
                 <td><input type="text" name="brand" value="${car.brand}" required></td>
                 <td><input type="text" name="year" value="${car.year}" required></td>
                 <td><input type=number name="price" value="${car.price}" required></td>
-                <td><input type="number" name="category id" value="${car.category.id}" required></td>
-                <td><input type="number" name="car showroom id" value="${car.carShowroom.id}" required></td>
+                <td><input type="number" name="category id" value="${car.category.id}" readonly></td>
+                <td><input type="number" name="car showroom id" value="${car.carShowroom.id}" readonly></td>
                 <td><input type="submit" formaction="/car-showrooms/car/update" value="Update"></td>
             </tr>
         </form>

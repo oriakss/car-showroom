@@ -36,7 +36,8 @@ public class CarRepositoryImpl implements CarRepository {
 
             carCriteriaQuery
                     .select(carRoot.get("id"))
-                    .where(criteriaBuilder.equal(carRoot.get("id"), car.getId()));//todo
+                    .where(criteriaBuilder.equal(carRoot.get("model"), car.getModel()))
+                    .where(criteriaBuilder.equal(carRoot.get("brand"), car.getBrand()));
 
             Long carId = session.createQuery(carCriteriaQuery)
                     .getResultList()

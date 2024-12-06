@@ -33,7 +33,8 @@ public class CarShowroomRepositoryImpl implements CarShowroomRepository {
 
             carShowroomCriteriaQuery
                     .select(carShowroomRoot.get("id"))
-                    .where(criteriaBuilder.equal(carShowroomRoot.get("name"), carShowroom.getName()));
+                    .where(criteriaBuilder.equal(carShowroomRoot.get("name"), carShowroom.getName()))
+                    .where(criteriaBuilder.equal(carShowroomRoot.get("address"), carShowroom.getAddress()));
 
             Long carShowroomId = session.createQuery(carShowroomCriteriaQuery)
                     .getResultList()
