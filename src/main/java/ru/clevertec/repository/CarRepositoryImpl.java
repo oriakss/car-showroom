@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import ru.clevertec.entity.Car;
+import ru.clevertec.entity.CarOwner;
 import ru.clevertec.entity.CarShowroom;
 import ru.clevertec.entity.Category;
 import ru.clevertec.util.HibernateUtil;
@@ -166,6 +167,7 @@ public class CarRepositoryImpl implements CarRepository {
                 car.setPrice(BigDecimal.valueOf(10449.99));
                 car.setCategory(category);
                 car.setCarShowroom(carShowroom);
+                car.setCarOwner(CarOwner.CAR_SHOWROOM);
 
                 session.persist(car);
                 transaction.commit();

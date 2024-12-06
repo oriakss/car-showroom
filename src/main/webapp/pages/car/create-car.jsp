@@ -1,3 +1,5 @@
+<%@ page import="ru.clevertec.entity.CarOwner" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
 <html>
 <head>
@@ -13,6 +15,7 @@
         <th>PRICE</th>
         <th>CATEGORY ID</th>
         <th>CAR SHOWROOM ID</th>
+        <th>CAR OWNER</th>
     </tr>
     </thead>
     <tbody>
@@ -24,6 +27,11 @@
             <td><input type="number" name="price" placeholder="price" required></td>
             <td><input type="number" name="category id" placeholder="category id" required></td>
             <td><input type="number" name="car showroom id" placeholder="car showroom id" required></td>
+            <td><select name="car owner" required>
+                <c:forEach var="owner" items="${CarOwner.values()}">
+                    <option>${owner}</option>
+                </c:forEach>
+            </select></td>
             <td><input type="submit" value="Create"></td>
         </tr>
     </form>

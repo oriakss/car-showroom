@@ -15,6 +15,7 @@
         <th>PRICE</th>
         <th>CATEGORY ID</th>
         <th>CAR SHOWROOM ID</th>
+        <th>CAR OWNER</th>
     </tr>
     </thead>
     <tbody>
@@ -27,6 +28,7 @@
             <td>${car.price}</td>
             <td>${car.category.id}</td>
             <td>${car.carShowroom.id}</td>
+            <td>${car.carOwner}</td>
         </tr>
     </c:forEach>
     </tbody>

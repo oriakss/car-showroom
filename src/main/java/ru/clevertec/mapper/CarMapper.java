@@ -1,6 +1,7 @@
 package ru.clevertec.mapper;
 
 import ru.clevertec.entity.Car;
+import ru.clevertec.entity.CarOwner;
 import ru.clevertec.entity.CarShowroom;
 import ru.clevertec.entity.Category;
 
@@ -27,6 +28,7 @@ public class CarMapper {
                 .price(new BigDecimal(request.getParameter("price")))
                 .category(category)
                 .carShowroom(carShowroom)
+                .carOwner(CarOwner.valueOf(request.getParameter("car owner")))
                 .build();
     }
 
