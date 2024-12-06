@@ -9,15 +9,16 @@ import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import ru.clevertec.entity.Client;
 import ru.clevertec.util.HibernateUtil;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 public class ClientRepositoryImpl implements ClientRepository {
 
     private static ClientRepository clientRepository;
-    private List<Client> clients = new ArrayList<>();
+    private List<Client> clients;
 
     @Override
     public Optional<Client> createClient(Client client) {
@@ -53,8 +54,8 @@ public class ClientRepositoryImpl implements ClientRepository {
 
     @Override
     public Optional<List<Client>> readClients() {
-        try (Session session = HibernateUtil.getSession()) {
-            if (clients == null || clients.isEmpty()) {
+        if (clients == null) {
+            try (Session session = HibernateUtil.getSession()) {
                 Transaction transaction = session.beginTransaction();
                 HibernateCriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 
@@ -65,11 +66,11 @@ public class ClientRepositoryImpl implements ClientRepository {
                 clients = session.createQuery(clientCriteriaQuery).getResultList();
 
                 transaction.commit();
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage());
             }
-            return Optional.of(clients);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
         }
+        return Optional.of(clients);
     }
 
     @Override
@@ -137,5 +138,21 @@ public class ClientRepositoryImpl implements ClientRepository {
     }
 
     private ClientRepositoryImpl() {
+        if (readClients().orElseThrow().isEmpty()) {
+            try (Session session = HibernateUtil.getSession()) {
+                Transaction transaction = session.beginTransaction();
+
+                Client client = Client.builder()
+                        .name("John Doe")
+                        .contacts(Set.of("222-232", "77-88"))
+                        .registrationDate(LocalDateTime.of(2012, 12, 12, 12, 12, 12, 121212))
+                        .build();
+
+                session.persist(client);
+                transaction.commit();
+
+                clients.add(client);
+            }
+        }
     }
 }

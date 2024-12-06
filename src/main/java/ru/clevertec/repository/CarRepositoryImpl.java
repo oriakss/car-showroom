@@ -13,7 +13,6 @@ import ru.clevertec.entity.Category;
 import ru.clevertec.util.HibernateUtil;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,7 +20,7 @@ import java.util.Optional;
 public class CarRepositoryImpl implements CarRepository {
 
     private static CarRepository carRepository;
-    private List<Car> cars = new ArrayList<>();
+    private List<Car> cars;
 
     @Override
     public Optional<Car> createCar(Car car) {
@@ -57,8 +56,8 @@ public class CarRepositoryImpl implements CarRepository {
 
     @Override
     public Optional<List<Car>> readCars() {
-        try (Session session = HibernateUtil.getSession()) {
-            if (cars == null || cars.isEmpty()) {
+        if (cars == null) {
+            try (Session session = HibernateUtil.getSession()) {
                 Transaction transaction = session.beginTransaction();
                 HibernateCriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 
@@ -69,11 +68,11 @@ public class CarRepositoryImpl implements CarRepository {
                 cars = session.createQuery(carCriteriaQuery).getResultList();
 
                 transaction.commit();
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage());
             }
-            return Optional.of(cars);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
         }
+        return Optional.of(cars);
     }
 
     @Override
@@ -140,7 +139,7 @@ public class CarRepositoryImpl implements CarRepository {
     }
 
     private CarRepositoryImpl() {
-        if(readCars().orElseThrow().isEmpty()) {
+        if (readCars().orElseThrow().isEmpty()) {
             try (Session session = HibernateUtil.getSession()) {
                 Transaction transaction = session.beginTransaction();
 
@@ -170,6 +169,8 @@ public class CarRepositoryImpl implements CarRepository {
 
                 session.persist(car);
                 transaction.commit();
+
+                cars.add(car);
             }
         }
     }

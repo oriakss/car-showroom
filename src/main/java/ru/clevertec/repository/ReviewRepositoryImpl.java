@@ -7,10 +7,11 @@ import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
+import ru.clevertec.entity.Car;
+import ru.clevertec.entity.Client;
 import ru.clevertec.entity.Review;
 import ru.clevertec.util.HibernateUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -18,7 +19,7 @@ import java.util.Optional;
 public class ReviewRepositoryImpl implements ReviewRepository {
 
     private static ReviewRepository reviewRepository;
-    private List<Review> reviews = new ArrayList<>();
+    private List<Review> reviews;
 
     @Override
     public Optional<Review> createReview(Review review) {
@@ -53,8 +54,8 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 
     @Override
     public Optional<List<Review>> readReviews() {
-        try (Session session = HibernateUtil.getSession()) {
-            if (reviews == null || reviews.isEmpty()) {
+        if (reviews == null) {
+            try (Session session = HibernateUtil.getSession()) {
                 Transaction transaction = session.beginTransaction();
                 HibernateCriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 
@@ -65,11 +66,11 @@ public class ReviewRepositoryImpl implements ReviewRepository {
                 reviews = session.createQuery(reviewCriteriaQuery).getResultList();
 
                 transaction.commit();
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage());
             }
-            return Optional.of(reviews);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
         }
+        return Optional.of(reviews);
     }
 
     @Override
@@ -135,5 +136,38 @@ public class ReviewRepositoryImpl implements ReviewRepository {
     }
 
     private ReviewRepositoryImpl() {
+        if (readReviews().orElseThrow().isEmpty()) {
+            try (Session session = HibernateUtil.getSession()) {
+                Transaction transaction = session.beginTransaction();
+
+                Client client = ClientRepositoryImpl.getInstance()
+                        .readClients()
+                        .orElseThrow()
+                        .stream()
+                        .filter(item -> item.getName().equals("John Doe"))
+                        .findFirst()
+                        .orElseThrow();
+
+                Car car = CarRepositoryImpl.getInstance()
+                        .readCars()
+                        .orElseThrow()
+                        .stream()
+                        .filter(item -> item.getId().equals(1L))
+                        .findFirst()
+                        .orElseThrow();
+
+                Review review = Review.builder()
+                        .text("Cool!!!")
+                        .rating("9")
+                        .client(client)
+                        .car(car)
+                        .build();
+
+                session.persist(review);
+                transaction.commit();
+
+                reviews.add(review);
+            }
+        }
     }
 }

@@ -10,7 +10,6 @@ import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import ru.clevertec.entity.CarShowroom;
 import ru.clevertec.util.HibernateUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -18,7 +17,7 @@ import java.util.Optional;
 public class CarShowroomRepositoryImpl implements CarShowroomRepository {
 
     private static CarShowroomRepository carShowroomRepository;
-    private List<CarShowroom> carShowrooms = new ArrayList<>();
+    private List<CarShowroom> carShowrooms;
 
     @Override
     public Optional<CarShowroom> createCarShowroom(CarShowroom carShowroom) {
@@ -54,8 +53,8 @@ public class CarShowroomRepositoryImpl implements CarShowroomRepository {
 
     @Override
     public Optional<List<CarShowroom>> readCarShowrooms() {
-        try (Session session = HibernateUtil.getSession()) {
-            if (carShowrooms == null || carShowrooms.isEmpty()) {
+        if (carShowrooms == null) {
+            try (Session session = HibernateUtil.getSession()) {
                 Transaction transaction = session.beginTransaction();
                 HibernateCriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 
@@ -66,11 +65,11 @@ public class CarShowroomRepositoryImpl implements CarShowroomRepository {
                 carShowrooms = session.createQuery(carShowroomCriteriaQuery).getResultList();
 
                 transaction.commit();
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage());
             }
-            return Optional.of(carShowrooms);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
         }
+        return Optional.of(carShowrooms);
     }
 
     @Override
@@ -135,7 +134,7 @@ public class CarShowroomRepositoryImpl implements CarShowroomRepository {
     }
 
     private CarShowroomRepositoryImpl() {
-        if(readCarShowrooms().orElseThrow().isEmpty()) {
+        if (readCarShowrooms().orElseThrow().isEmpty()) {
             try (Session session = HibernateUtil.getSession()) {
                 Transaction transaction = session.beginTransaction();
 
@@ -145,6 +144,8 @@ public class CarShowroomRepositoryImpl implements CarShowroomRepository {
 
                 session.persist(carShowroom);
                 transaction.commit();
+
+                carShowrooms.add(carShowroom);
             }
         }
     }

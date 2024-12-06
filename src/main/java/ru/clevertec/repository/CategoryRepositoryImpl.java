@@ -10,7 +10,6 @@ import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import ru.clevertec.entity.Category;
 import ru.clevertec.util.HibernateUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -18,7 +17,7 @@ import java.util.Optional;
 public class CategoryRepositoryImpl implements CategoryRepository {
 
     private static CategoryRepository categoryRepository;
-    private List<Category> categories = new ArrayList<>();
+    private List<Category> categories;
 
     @Override
     public Optional<Category> createCategory(Category category) {
@@ -53,8 +52,8 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     @Override
     public Optional<List<Category>> readCategories() {
-        try (Session session = HibernateUtil.getSession()) {
-            if (categories == null || categories.isEmpty()) {
+        if (categories == null) {
+            try (Session session = HibernateUtil.getSession()) {
                 Transaction transaction = session.beginTransaction();
                 HibernateCriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 
@@ -65,11 +64,11 @@ public class CategoryRepositoryImpl implements CategoryRepository {
                 categories = session.createQuery(categoryCriteriaQuery).getResultList();
 
                 transaction.commit();
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage());
             }
-            return Optional.of(categories);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
         }
+        return Optional.of(categories);
     }
 
     @Override
@@ -133,7 +132,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     }
 
     private CategoryRepositoryImpl() {
-        if(readCategories().orElseThrow().isEmpty()) {
+        if (readCategories().orElseThrow().isEmpty()) {
             try (Session session = HibernateUtil.getSession()) {
                 Transaction transaction = session.beginTransaction();
 
@@ -142,6 +141,8 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
                 session.persist(category);
                 transaction.commit();
+
+                categories.add(category);
             }
         }
     }
